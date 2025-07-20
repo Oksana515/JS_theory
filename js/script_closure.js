@@ -65,3 +65,70 @@ const double = makeTrackedMultiplier(2);
 double(5); // 10 (used 1 times)
 double(3); // 6 (used 2 times)
 double(7); // 14 (used 3 times)
+
+// Write a function greetUser(name) that returns a new function. That function, when called, should greet the user by their name:
+
+function greetUser(name) {
+  return function () {
+    console.log("Hello, " + name + "!");
+  };
+}
+
+const greetOksana = greetUser("Oksana");
+greetOksana(); // Hello, Oksana!
+
+// This function returns another function (a closure).
+
+// When you call greetUser("Alice"), it doesn’t print anything immediately.
+
+// Instead, it returns a function that, when called later, will print "Hello, Alice!".
+
+// This lets you save the greeting function and call it later.
+
+// Example:
+
+// const greetAlice = greetUser("Alice"); // no output yet
+// greetAlice(); // prints: Hello, Alice!
+
+// Secret Holder. Write makeSecret(secret) that returns two functions: one to get the secret and one to set a new one.
+
+function makeSecret(secret) {
+  return {
+    set: function (newSecret) {
+      secret = newSecret;
+    },
+    get: function () {
+      console.log(secret);
+    },
+  };
+}
+
+let secret = makeSecret("I love JS");
+
+secret.get(); // "I love JS"
+secret.set("I love Python");
+secret.get(); // "I love Python"
+
+// Limit Function Call. Write a function limit(fn, maxCalls) that returns a version of fn that can only be called maxCalls times:
+
+function limit(fn, maxCalls) {
+  let calls = 0; // to keep track of calls made
+
+  return function (...args) {
+    if (calls < maxCalls) {
+      calls++;
+      return fn(...args); // call the original function with all arguments
+    } else {
+      // limit reached — do nothing or return undefined
+      console.log("Function call limit reached");
+      return undefined;
+    }
+  };
+}
+
+const sayHi = () => console.log("Hi!");
+const limitedSayHi = limit(sayHi, 2);
+
+limitedSayHi(); // Hi!
+limitedSayHi(); // Hi!
+limitedSayHi(); // (nothing happens)
